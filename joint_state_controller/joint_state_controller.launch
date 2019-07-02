@@ -3,5 +3,5 @@
   <rosparam command="load" file="$(find joint_state_controller)/joint_state_controller.yaml" />
 
   <!-- spawn controller -->
-  <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="joint_state_controller" />
+  <node pkg="sr_utilities_common" type="timed_rosrun.sh" args="12 controller_manager spawner joint_state_controller" name="timed_rosrun" output="screen" />
 </launch>
