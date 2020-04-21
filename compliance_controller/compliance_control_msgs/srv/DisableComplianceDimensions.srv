@@ -1,0 +1,10 @@
+# Turn off compliance along these dimensions.
+# Give 'true' to enable compliance in the direction, 'false' to not be compliant
+bool enable_x_translation
+bool enable_y_translation
+bool enable_z_translation
+bool enable_x_rotation
+bool enable_y_rotation
+bool enable_z_rotation
+---
+bool success
