@@ -52,6 +52,9 @@ void ComplianceController<SegmentImpl, HardwareInterface>::update(const ros::Tim
   bool stale_compliance_command =
       ((ros::Time::now() - last_compliance_adjustment_stamp_) > compliance_command_timeout_);
 
+
+
+  ROS_WARN_STREAM_THROTTLE(1, "Update compliance controller, trajectory allowed: " << TrajOrJogController::allow_trajectory_execution_);
   // If trajectory execution is not active
   if (!TrajOrJogController::allow_trajectory_execution_)
   {
@@ -99,6 +102,7 @@ void ComplianceController<SegmentImpl, HardwareInterface>::update(const ros::Tim
     // Back to real-time velocity control if the trajectory is complete
     if (JointTrajectoryController::rt_active_goal_ == NULL)
     {
+      ROS_WARN_STREAM("Trajectory goal active is null");
       ComplianceController::activateVelocityStreaming();
     }
   }
@@ -145,6 +149,8 @@ bool ComplianceController<SegmentImpl, HardwareInterface>::init(HardwareInterfac
 template <class SegmentImpl, class HardwareInterface>
 void ComplianceController<SegmentImpl, HardwareInterface>::activateVelocityStreaming()
 {
+  ROS_WARN_STREAM("Compliance controller, activate velocity streaming, set traj mode to false");
+
   TrajOrJogController::allow_trajectory_execution_ = false;
   last_trajectory_update_time_ = ros::Time(0);
   compliance_velocity_adjustment_.data.resize(TrajOrJogController::n_joints_, 0);

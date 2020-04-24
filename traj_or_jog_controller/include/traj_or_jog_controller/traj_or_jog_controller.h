@@ -13,7 +13,7 @@
 namespace traj_or_jog_controller
 {
 template <class SegmentImpl, class HardwareInterface>
-class TrajOrJogController : 
+class TrajOrJogController :
 public joint_trajectory_controller::JointTrajectoryController <SegmentImpl,HardwareInterface>
 {
 public:
@@ -34,7 +34,7 @@ public:
     JointTrajectoryController::starting(time);
 
     // Start the real-time velocity controller with 0.0 velocities
-    commands_buffer_.readFromRT()->assign(n_joints_, 0.0); 
+    commands_buffer_.readFromRT()->assign(n_joints_, 0.0);
   }
 
   void stopTrajectoryExecution()
@@ -72,11 +72,20 @@ protected:
     }
 
     if(msg->data.size()!=n_joints_)
-    { 
+    {
       ROS_ERROR_STREAM("Dimension of command (" << msg->data.size() << ") does not match number of joints (" << n_joints_ << ")! Not executing!");
-      return; 
+      return;
     }
+
     commands_buffer_.writeFromNonRT(msg->data);
+    std::vector<double> & command = *commands_buffer_.readFromRT();
+    ROS_WARN("Velocity command CB: [%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]",
+             command[0],
+             command[1],
+             command[2],
+             command[3],
+             command[4],
+             command[5]);
   }
 
   /**

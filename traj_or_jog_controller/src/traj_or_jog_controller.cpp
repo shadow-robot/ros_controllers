@@ -20,6 +20,7 @@ bool TrajOrJogController<SegmentImpl, HardwareInterface>::init(HardwareInterface
 
   commands_buffer_.writeFromNonRT(std::vector<double>(n_joints_, 0.0));
 
+  ROS_WARN("Trajectories disabled on start of traj/jog controller");
   allow_trajectory_execution_ = false;
 
   return true;
@@ -34,6 +35,7 @@ void TrajOrJogController<SegmentImpl, HardwareInterface>::update(const ros::Time
   // The member variable allow_trajectory_execution_ determines which controller gets updated.
 
   // If trajectory execution is not active
+  ROS_WARN_STREAM_THROTTLE(1, "Update traj/jog, trajectory execution: " << allow_trajectory_execution_);
   if ( !allow_trajectory_execution_ )
   {
     JointTrajectoryController::preemptActiveGoal();
@@ -52,6 +54,7 @@ void TrajOrJogController<SegmentImpl, HardwareInterface>::update(const ros::Time
     // Back to real-time velocity control if the trajectory is complete
     if (JointTrajectoryController::rt_active_goal_ == NULL)
     {
+      ROS_WARN_STREAM("Trajectory controller finished, execution set back to zero.");
       TrajOrJogController::allow_trajectory_execution_ = false;
     }
   }
@@ -66,6 +69,9 @@ goalCB(GoalHandle gh)
 {
   // Make sure trajectory execution is enabled.
   // It will be interrupted by any new real-time commands.
+
+  ROS_WARN_STREAM("Traj/jog trajectory goal callback, setting trajectory mode true");
+
   if (!allow_trajectory_execution_)
   {
     // Reset the JointTrajectoryController to ensure it has current joint angles, etc.
