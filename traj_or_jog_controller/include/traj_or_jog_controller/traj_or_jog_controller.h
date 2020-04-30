@@ -6,6 +6,7 @@
 // Project
 #include <actionlib/server/action_server.h>
 #include <joint_trajectory_controller/joint_trajectory_controller.h>
+#include <trajectory_msgs/JointTrajectory.h>
 #include <realtime_tools/realtime_buffer.h>
 #include <trajectory_interface/quintic_spline_segment.h>
 #include <std_msgs/Float64MultiArray.h>
@@ -92,5 +93,6 @@ protected:
    * \brief Override the callback for the JointTrajectoryController action server.
    */
   void goalCB(GoalHandle gh);
+  void trajectoryCommandCB(const trajectory_msgs::JointTrajectoryConstPtr& msg);
 };
 }

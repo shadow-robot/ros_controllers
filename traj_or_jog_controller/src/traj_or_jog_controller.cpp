@@ -83,6 +83,30 @@ goalCB(GoalHandle gh)
   JointTrajectoryController::goalCB(gh);
 }
 
+/**
+ * \brief Override the callback for the JointTrajectoryController command subscriber.
+ */
+template <class SegmentImpl, class HardwareInterface>
+void TrajOrJogController<SegmentImpl, HardwareInterface>::
+trajectoryCommandCB(const trajectory_msgs::JointTrajectoryConstPtr& msg)
+{
+  // Make sure trajectory execution is enabled.
+  // It will be interrupted by any new real-time commands.
+
+  ROS_WARN_STREAM("Traj/jog trajectory command callback, setting trajectory mode true");
+
+  if (!allow_trajectory_execution_)
+  {
+    // Reset the JointTrajectoryController to ensure it has current joint angles, etc.
+    JointTrajectoryController::starting(ros::Time::now());
+
+    allow_trajectory_execution_ = true;
+  }
+
+  JointTrajectoryController::trajectoryCommandCB(msg);
+
+}
+
 }  // namespace traj_or_jog_controller
 
 // Set up namespacing of controllers and create their plugins.
