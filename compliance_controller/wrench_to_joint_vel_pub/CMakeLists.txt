@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
   tf2_geometry_msgs
   tf2_ros
+  joy
 )
 
 find_package(Eigen3 REQUIRED)
@@ -32,6 +33,7 @@ catkin_package(
     std_srvs
     tf2_geometry_msgs
     tf2_ros
+    joy
 )
 
 include_directories(

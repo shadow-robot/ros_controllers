@@ -29,7 +29,7 @@
   <depend>moveit_ros_manipulation</depend>
   <depend>moveit_ros_move_group</depend>
   <depend>moveit_ros_planning_interface</depend>
-
+  <depend>joy</depend>
   <export>
   </export>
 </package>
