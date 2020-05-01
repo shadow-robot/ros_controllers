@@ -4,7 +4,7 @@
 
     <param name="joy_topic" value="/joy"/>
     <param name="z_offset" value="-1.0"/>
-    <param name="z_scale" value="-0.5"/>
+    <param name="z_scale" value="-5"/>
 
   </node>
   <node name="joy" pkg="joy" type="joy_node"/>

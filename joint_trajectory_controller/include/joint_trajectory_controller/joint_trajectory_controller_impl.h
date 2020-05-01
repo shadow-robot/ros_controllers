@@ -167,8 +167,9 @@ template <class SegmentImpl, class HardwareInterface>
 inline void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 trajectoryCommandCB(const JointTrajectoryConstPtr& msg)
 {
+  ROS_WARN_STREAM("Here");
   const bool update_ok = updateTrajectoryCommand(msg, RealtimeGoalHandlePtr());
-  if (update_ok) {preemptActiveGoal();}
+  if (update_ok) {preemptActiveGoal(); ROS_WARN_STREAM("update was ok");}
 }
 
 template <class SegmentImpl, class HardwareInterface>
