@@ -100,7 +100,7 @@ void ComplianceController<SegmentImpl, HardwareInterface>::update(const ros::Tim
     }
 
     // Back to real-time velocity control if the trajectory is complete
-    if (JointTrajectoryController::rt_active_goal_ == NULL)
+    if (trajectoryCompleted(time, period)) //JointTrajectoryController::rt_active_goal_ == NULL)
     {
       ROS_WARN_STREAM("Trajectory goal active is null");
       ComplianceController::activateVelocityStreaming();
@@ -114,6 +114,8 @@ bool ComplianceController<SegmentImpl, HardwareInterface>::init(HardwareInterfac
 {
   // Initialize the parent class first
   TrajOrJogController::init(hw, root_nh, controller_nh);
+
+  rt_goal_was_null_ = true;
 
   compliance_adjustment_sub_ =
       controller_nh_.subscribe(controller_nh_.getNamespace() + "compliance_controller/compliance_velocity_adjustment",
@@ -158,6 +160,47 @@ void ComplianceController<SegmentImpl, HardwareInterface>::activateVelocityStrea
 
   // Reset velocity commands to zero
   TrajOrJogController::commands_buffer_.readFromRT()->assign(TrajOrJogController::n_joints_, 0.0);
+}
+
+
+// Test if trajectory is finished
+template <class SegmentImpl, class HardwareInterface>
+bool ComplianceController<SegmentImpl, HardwareInterface>::trajectoryCompleted(const ros::Time& time, const ros::Duration& period)
+{
+  bool goal_was_not_null = !rt_goal_was_null_;
+  bool goal_is_null_now = (JointTrajectoryController::rt_active_goal_ == NULL);
+
+  rt_goal_was_null_ = goal_is_null_now;
+
+  if (goal_was_not_null && goal_is_null_now)
+  {
+    return true;
+  }
+
+  typename JointTrajectoryController::TimeData time_data;
+  time_data.time = time;      // Cache current time
+  time_data.period = period;  // Cache current control period
+  time_data.uptime = JointTrajectoryController::time_data_.readFromRT()->uptime + period;  // Update controller uptime
+
+
+  // Get currently followed trajectory
+  typename JointTrajectoryController::TrajectoryPtr curr_traj_ptr;
+  JointTrajectoryController::curr_trajectory_box_.get(curr_traj_ptr);
+  typename JointTrajectoryController::Trajectory& curr_traj = *curr_traj_ptr;
+
+  typedef joint_trajectory_controller::JointTrajectorySegment<SegmentImpl> Segment;
+
+  for (unsigned int i = 0; i < JointTrajectoryController::joints_.size(); ++i)
+  {
+
+    typename JointTrajectoryController::TrajectoryPerJoint::const_iterator segment_it =
+        sample(curr_traj[i], time_data.uptime.toSec(), JointTrajectoryController::desired_joint_state_);
+    if ((curr_traj[i].end() != segment_it) && (segment_it != --curr_traj[1].end()))
+    {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Update the JointTrajectoryController like usual, but add the compliance command

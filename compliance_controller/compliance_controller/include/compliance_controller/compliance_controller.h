@@ -65,6 +65,7 @@ public:
    * \brief Initialize the plugin.
    */
   bool init(HardwareInterface* hw, ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh);
+  bool trajectoryCompleted(const ros::Time& time, const ros::Duration& period);
 
 protected:
   typedef traj_or_jog_controller::TrajOrJogController<SegmentImpl, HardwareInterface> TrajOrJogController;
@@ -133,6 +134,9 @@ private:
 
   // Toggles compliance
   bool compliance_enabled_ = false;
+
+  // Keep track of previous goal state
+  bool rt_goal_was_null_;
 };
 }
 
