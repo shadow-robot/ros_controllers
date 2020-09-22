@@ -93,7 +93,7 @@ trajectoryCommandCB(const trajectory_msgs::JointTrajectoryConstPtr& msg)
   // Make sure trajectory execution is enabled.
   // It will be interrupted by any new real-time commands.
 
-  ROS_WARN_STREAM("Traj/jog trajectory command callback, setting trajectory mode true");
+  ROS_WARN_STREAM_THROTTLE(1, "Traj/jog trajectory command callback, setting trajectory mode true");
 
   if (!allow_trajectory_execution_)
   {

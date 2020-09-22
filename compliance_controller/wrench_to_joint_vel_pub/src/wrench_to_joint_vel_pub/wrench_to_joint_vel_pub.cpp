@@ -305,6 +305,7 @@ void PublishCompliantJointVelocities::spin()
 
       geometry_msgs::WrenchStamped debug_wrench; //DEBUG
       debug_wrench.header.stamp = ros::Time::now(); // DEBUG
+      debug_wrench.header.frame_id = compliance_params_.force_torque_frame_name;
       debug_wrench.wrench.force.x = compliant_control_ptr_->wrench_[0]; //DEBUG
       debug_wrench.wrench.force.y = compliant_control_ptr_->wrench_[1]; //DEBUG
       debug_wrench.wrench.force.z = compliant_control_ptr_->wrench_[2]; //DEBUG
@@ -314,6 +315,7 @@ void PublishCompliantJointVelocities::spin()
 
       // debug_wrench = ee_weight_wrench; //DEBUG
       // debug_wrench.header.stamp = ros::Time::now(); // DEBUG
+      // debug_wrench.header.frame_id = compliance_params_.force_torque_frame_name;  // DEBUG
 
       debug_pub_.publish(debug_wrench); //DEBUG
 
@@ -397,7 +399,8 @@ void PublishCompliantJointVelocities::spin()
         {
           if ((fabs(delta_theta_[i]) > largest_allowable_command) || std::isnan(delta_theta_[i]))
           {
-            ROS_WARN_STREAM_NAMED(NODE_NAME, "Magnitude of compliant command is too large. Pausing compliant commands.");
+            ROS_WARN_STREAM_NAMED(NODE_NAME, "Magnitude of compliant command for joint [" << i << "] is too large (" <<
+                                              delta_theta_[i] << " rad/s). Pausing compliant commands.");
             for (int j = 0; j < delta_theta_.size(); ++j)
             {
               delta_theta_[j] = 0.;
