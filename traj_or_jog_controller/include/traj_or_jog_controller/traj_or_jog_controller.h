@@ -80,13 +80,13 @@ protected:
 
     commands_buffer_.writeFromNonRT(msg->data);
     std::vector<double> & command = *commands_buffer_.readFromRT();
-    ROS_WARN("Velocity command CB: [%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]",
-             command[0],
-             command[1],
-             command[2],
-             command[3],
-             command[4],
-             command[5]);
+    // ROS_WARN("Velocity command CB: [%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]",
+    //          command[0],
+    //          command[1],
+    //          command[2],
+    //          command[3],
+    //          command[4],
+    //          command[5]);
   }
 
   /**

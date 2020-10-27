@@ -54,7 +54,7 @@ void ComplianceController<SegmentImpl, HardwareInterface>::update(const ros::Tim
 
 
 
-  ROS_WARN_STREAM_THROTTLE(1, "Update compliance controller, trajectory allowed: " << TrajOrJogController::allow_trajectory_execution_);
+  // ROS_WARN_STREAM_THROTTLE(1, "Update compliance controller, trajectory allowed: " << TrajOrJogController::allow_trajectory_execution_);
   // If trajectory execution is not active
   if (!TrajOrJogController::allow_trajectory_execution_)
   {
