@@ -749,6 +749,7 @@ template <class SegmentImpl, class HardwareInterface>
 void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
 {
+  ROS_ERROR_STREAM("Entered 'setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)' at time " << time);
   assert(joint_names_.size() == hold_trajectory_ptr_->size());
 
   typename Segment::State hold_start_state_ = typename Segment::State(1);
@@ -758,6 +759,7 @@ setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
 
   if(stop_trajectory_duration_ == 0.0)
   {
+    ROS_ERROR_STREAM("stop_trajectory_duration_ == 0.0");
     // stop at current actual position
     for (unsigned int i = 0; i < n_joints; ++i)
     {
@@ -772,6 +774,7 @@ setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
   }
   else
   {
+    ROS_ERROR_STREAM("stop_trajectory_duration_ != 0.0");
     // Settle position in a fixed time. We do the following:
     // - Create segment that goes from current (pos,vel) to (pos,-vel) in 2x the desired stop time
     // - Assuming segment symmetry, sample segment at its midpoint (desired stop time). It should have zero velocity
