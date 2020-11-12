@@ -35,6 +35,7 @@
 #include <iterator>
 #include <stdexcept>
 #include <trajectory_interface/pos_vel_acc_state.h>
+#include "ros/ros.h"
 
 namespace trajectory_interface
 {
