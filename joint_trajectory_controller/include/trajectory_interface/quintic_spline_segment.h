@@ -397,12 +397,12 @@ sampleWithTimeBounds(const SplineCoefficients& coefficients, const Scalar& durat
   }
   else if (time > duration)
   {
-    //ROS_ERROR_STREAM("QuinticSplineSegment<ScalarType>::sampleWithTimeBounds - time > duration. Duration: " << duration << ". time: " << time);
+    ROS_ERROR_STREAM("QuinticSplineSegment<ScalarType>::sampleWithTimeBounds - time > duration. Duration: " << duration << ". time: " << time);
     Scalar _;
-    // sample(coefficients, duration, position, _, _);
-    sample(coefficients, duration, position, velocity, acceleration);
-    //velocity = 0;
-    //acceleration = 0;
+    sample(coefficients, duration, position, _, _);
+    //sample(coefficients, duration, position, velocity, acceleration);
+    velocity = 0;
+    acceleration = 0;
   }
   else
   {
