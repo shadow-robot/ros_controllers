@@ -677,6 +677,7 @@ bool JointTrajectoryController<SegmentImpl, HardwareInterface>::
 queryStateService(control_msgs::QueryTrajectoryState::Request&  req,
                   control_msgs::QueryTrajectoryState::Response& resp)
 {
+  ROS_ERROR_STREAM_THROTTLE(1, "bool JointTrajectoryController<SegmentImpl, HardwareInterface>::queryStateService");
   // Preconditions
   if (!this->isRunning())
   {
