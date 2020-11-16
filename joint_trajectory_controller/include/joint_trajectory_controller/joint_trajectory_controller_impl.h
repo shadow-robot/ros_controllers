@@ -348,6 +348,7 @@ template <class SegmentImpl, class HardwareInterface>
 void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 update(const ros::Time& time, const ros::Duration& period)
 {
+  ROS_ERROR_STREAM_THROTTLE(1, "void JointTrajectoryController<SegmentImpl, HardwareInterface>::update(const ros::Time& time, const ros::Duration& period)");
   // Get currently followed trajectory
   TrajectoryPtr curr_traj_ptr;
   curr_trajectory_box_.get(curr_traj_ptr);
@@ -420,6 +421,7 @@ update(const ros::Time& time, const ros::Duration& period)
       }
       else if (segment_it == --curr_traj[i].end())
       {
+        ROS_ERROR_STREAM("Finished executing last segment, checking goal tolerances");
         if (verbose_)
           ROS_DEBUG_STREAM_THROTTLE_NAMED(1,name_,"Finished executing last segment, checking goal tolerances");
 
@@ -677,7 +679,7 @@ bool JointTrajectoryController<SegmentImpl, HardwareInterface>::
 queryStateService(control_msgs::QueryTrajectoryState::Request&  req,
                   control_msgs::QueryTrajectoryState::Response& resp)
 {
-  ROS_ERROR_STREAM_THROTTLE(1, "bool JointTrajectoryController<SegmentImpl, HardwareInterface>::queryStateService");
+
   // Preconditions
   if (!this->isRunning())
   {
