@@ -1,9 +1,9 @@
 spin_rate:  125 # Hertz
 jacobian_frame_name: world  # MoveIt! planning frame. Often the last link in your tf tree
 
-force_torque_frame_name: rh_forearm # The frame of incoming force/torque data (WARNING this has to be
+force_torque_frame_name: ra_tool0_controller # The frame of incoming force/torque data (WARNING this has to be
                                     # the same as in the incoming FT sensor msg as currently there is no conversion)
-force_torque_topic: /ra_wrench # The topic of incoming force/torque data
+force_torque_topic: /wrench # The topic of incoming force/torque data
 
 spoof_sensor: ra_ft_sensor
 
@@ -15,14 +15,16 @@ condition_number_limit: 50 # The Jacobian condition number above which to pause 
 compliance_library:
   # Key equation: compliance_velocity[i] = wrench[i]/stiffness[i]
   # Be careful. As in the case of the damping, stiffnesses <= 1e-3 are considered infinite!
-  stiffness: [2000, 2000, 2000, 200, 200, 200] # First three element are Newtons/(m/s), last 3 are N*m/(rad/s). Should be positive.
+#   stiffness: [2000, 2000, 2000, 200, 200, 200] # First three element are Newtons/(m/s), last 3 are N*m/(rad/s). Should be positive.
+  stiffness: [40, 40, 40, 10, 10, 10] # First three element are Newtons/(m/s), last 3 are N*m/(rad/s). Should be positive.
   # Be careful, damping is set weirdly. The inverse of the parameter is used.
   # Smaller damping parameters lead to more damping. Except if you set the parameter to 
   # be <= 1e-3 in which case it gets set to a high number, efectively nullifying the damping term
-  #damping: [00, 00, 00, 0000, 0000, 0000] # First three element are Newtons/m, last 3 are N*m/rad. Should be positive.
-  damping: [10000, 10000, 10000, 10000, 10000, 10000]
+#  #damping: [00, 00, 00, 0000, 0000, 0000] # First three element are Newtons/m, last 3 are N*m/rad. Should be positive.
+  damping: [1000, 1000, 1000, 10000, 10000, 10000]
   low_pass_filter_param: 10 # Larger > more smoothing on compliance calcs, but more lag
-  deadband: [1, 1, 1, 1, 1, 1] # No reaction until force exceeds X [N, N, N, Nm, Nm, Nm]
+#  deadband: [6, 6, 6, 0.5, 0.5, 0.5] # No reaction until force exceeds X [N, N, N, Nm, Nm, Nm]
+  deadband: [22, 22, 22, 0.5, 0.5, 0.5] # No reaction until force exceeds X [N, N, N, Nm, Nm, Nm]
   end_condition_wrench: [80, 80, 80, 60, 60, 60] # Safety feature. Halt if force exceeds [N, N, N, Nm, Nm, Nm]
   highest_allowable_force: 88 # Safety feature. Halt if force magnitude exceeds this across all dimensions [N]
   highest_allowable_torque: 50 # Safety feature. Halt if torque magnitude exceeds this across all dimensions [Nm]
@@ -31,6 +33,6 @@ compliance_library:
   default_compliant_dimensions: [1, 1, 1, 1, 1, 1]
   compensate_for_ee_weight: true # Determines whether or not to remove the wrench caused be EE weight before doing calcs. Enable this for real robot
   # simulated hand is currently around 37 N
-  ee_weight: 37 #45 # Newtons, the weight of the EE
-  ee_com: [0, 0, 0.12] # Meters, the location of the center of mass, in the Force/torque frame
+  ee_weight: 0 #45 # Newtons, the weight of the EE
+  ee_com: [0, 0, 0.0] # Meters, the location of the center of mass, in the Force/torque frame
   gravity_frame_name: world # The frame name who's z-axis points world-up (away from gravity)

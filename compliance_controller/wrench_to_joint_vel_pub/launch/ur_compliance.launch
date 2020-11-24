@@ -2,4 +2,5 @@
   <node name="wrench_to_joint_vel_pub" pkg="wrench_to_joint_vel_pub" type="wrench_to_joint_vel_pub" output="screen" >
     <rosparam command="load" file="$(find wrench_to_joint_vel_pub)/config/compliance_settings.yaml" />
   </node>
+  <node pkg="tf" type="static_transform_publisher" name="ra_base_tool" args="0 0 0 0 0 0 /ra_base /base 100"/> 
 </launch>
