@@ -35,7 +35,6 @@
 #include <iterator>
 #include <stdexcept>
 #include <trajectory_interface/pos_vel_acc_state.h>
-#include "ros/ros.h"
 
 namespace trajectory_interface
 {
@@ -386,10 +385,8 @@ void QuinticSplineSegment<ScalarType>::
 sampleWithTimeBounds(const SplineCoefficients& coefficients, const Scalar& duration, const Scalar& time,
                      Scalar& position, Scalar& velocity, Scalar& acceleration)
 {
-  //double time_2 = time - 0.004;
   if (time < 0)
   {
-    ROS_ERROR_STREAM("QuinticSplineSegment<ScalarType>::sampleWithTimeBounds - time < 0");
     Scalar _;
     sample(coefficients, 0.0, position, _, _);
     velocity = 0;
@@ -397,10 +394,8 @@ sampleWithTimeBounds(const SplineCoefficients& coefficients, const Scalar& durat
   }
   else if (time > duration)
   {
-    ROS_ERROR_STREAM("QuinticSplineSegment<ScalarType>::sampleWithTimeBounds - time > duration. Duration: " << duration << ". time: " << time);
     Scalar _;
     sample(coefficients, duration, position, _, _);
-    //sample(coefficients, duration, position, velocity, acceleration);
     velocity = 0;
     acceleration = 0;
   }

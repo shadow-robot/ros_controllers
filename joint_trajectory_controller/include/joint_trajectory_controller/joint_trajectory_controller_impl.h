@@ -168,7 +168,7 @@ inline void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 trajectoryCommandCB(const JointTrajectoryConstPtr& msg)
 {
   const bool update_ok = updateTrajectoryCommand(msg, RealtimeGoalHandlePtr());
-  if (update_ok) {preemptActiveGoal(); ROS_WARN_STREAM_THROTTLE(3, "update was ok");}
+  if (update_ok) {preemptActiveGoal();}
 }
 
 template <class SegmentImpl, class HardwareInterface>
@@ -348,7 +348,6 @@ template <class SegmentImpl, class HardwareInterface>
 void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 update(const ros::Time& time, const ros::Duration& period)
 {
-  ROS_ERROR_STREAM_THROTTLE(1, "void JointTrajectoryController<SegmentImpl, HardwareInterface>::update(const ros::Time& time, const ros::Duration& period)");
   // Get currently followed trajectory
   TrajectoryPtr curr_traj_ptr;
   curr_trajectory_box_.get(curr_traj_ptr);
@@ -421,7 +420,6 @@ update(const ros::Time& time, const ros::Duration& period)
       }
       else if (segment_it == --curr_traj[i].end())
       {
-        ROS_ERROR_STREAM("Finished executing last segment, checking goal tolerances");
         if (verbose_)
           ROS_DEBUG_STREAM_THROTTLE_NAMED(1,name_,"Finished executing last segment, checking goal tolerances");
 
@@ -679,7 +677,6 @@ bool JointTrajectoryController<SegmentImpl, HardwareInterface>::
 queryStateService(control_msgs::QueryTrajectoryState::Request&  req,
                   control_msgs::QueryTrajectoryState::Response& resp)
 {
-
   // Preconditions
   if (!this->isRunning())
   {
@@ -752,7 +749,6 @@ template <class SegmentImpl, class HardwareInterface>
 void JointTrajectoryController<SegmentImpl, HardwareInterface>::
 setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
 {
-  ROS_ERROR_STREAM("Entered 'setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)' at time " << time);
   assert(joint_names_.size() == hold_trajectory_ptr_->size());
 
   typename Segment::State hold_start_state_ = typename Segment::State(1);
@@ -762,7 +758,6 @@ setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
 
   if(stop_trajectory_duration_ == 0.0)
   {
-    ROS_ERROR_STREAM("stop_trajectory_duration_ == 0.0");
     // stop at current actual position
     for (unsigned int i = 0; i < n_joints; ++i)
     {
@@ -777,7 +772,6 @@ setHoldPosition(const ros::Time& time, RealtimeGoalHandlePtr gh)
   }
   else
   {
-    ROS_ERROR_STREAM("stop_trajectory_duration_ != 0.0");
     // Settle position in a fixed time. We do the following:
     // - Create segment that goes from current (pos,vel) to (pos,-vel) in 2x the desired stop time
     // - Assuming segment symmetry, sample segment at its midpoint (desired stop time). It should have zero velocity
