@@ -36,6 +36,9 @@
  * Author: Bence Magyar, Enrique Fernández
  */
 
+#pragma once
+
+
 #include <control_msgs/JointTrajectoryControllerState.h>
 #include <controller_interface/controller.h>
 #include <diff_drive_controller/DiffDriveControllerConfig.h>
@@ -46,7 +49,6 @@
 #include <hardware_interface/joint_command_interface.h>
 #include <memory>
 #include <nav_msgs/Odometry.h>
-#include <pluginlib/class_list_macros.hpp>
 #include <realtime_tools/realtime_buffer.h>
 #include <realtime_tools/realtime_publisher.h>
 #include <tf/tfMessage.h>
@@ -231,8 +233,8 @@ namespace diff_drive_controller{
 
     /// Dynamic Reconfigure server
     typedef dynamic_reconfigure::Server<DiffDriveControllerConfig> ReconfigureServer;
-    
     std::shared_ptr<ReconfigureServer> dyn_reconf_server_;
+    boost::recursive_mutex dyn_reconf_server_mutex_;
 
   private:
     /**
@@ -307,5 +309,4 @@ namespace diff_drive_controller{
                           double right_wheel_radius);
   };
 
-  PLUGINLIB_EXPORT_CLASS(diff_drive_controller::DiffDriveController, controller_interface::ControllerBase);
 } // namespace diff_drive_controller

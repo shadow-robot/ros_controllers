@@ -28,14 +28,13 @@
 
 /// \author: Adolfo Rodriguez Tsouroukdissian
 
-#ifndef FORCE_TORQUE_SENSOR_CONTROLLER_FORCE_TORQUE_SENSOR_CONTROLLER_H
-#define FORCE_TORQUE_SENSOR_CONTROLLER_FORCE_TORQUE_SENSOR_CONTROLLER_H
+#pragma once
+
 
 #include <controller_interface/controller.h>
 #include <geometry_msgs/WrenchStamped.h>
 #include <hardware_interface/force_torque_sensor_interface.h>
 #include <memory>
-#include <pluginlib/class_list_macros.hpp>
 #include <realtime_tools/realtime_publisher.h>
 
 namespace force_torque_sensor_controller
@@ -61,5 +60,3 @@ private:
 };
 
 }
-
-#endif

@@ -27,8 +27,8 @@
 
 /// \author Adolfo Rodriguez Tsouroukdissian
 
-#ifndef JOINT_TRAJECTORY_CONTROLLER_INIT_JOINT_TRAJECTORY_H
-#define JOINT_TRAJECTORY_CONTROLLER_INIT_JOINT_TRAJECTORY_H
+#pragma once
+
 
 // C++ standard
 #include <algorithm>
@@ -100,14 +100,14 @@ struct InitJointTrajectoryOptions
   typedef typename Segment::Scalar                                                            Scalar;
 
   InitJointTrajectoryOptions()
-    : current_trajectory(0),
-      joint_names(0),
-      angle_wraparound(0),
+    : current_trajectory(nullptr),
+      joint_names(nullptr),
+      angle_wraparound(nullptr),
       rt_goal_handle(),
-      default_tolerances(0),
-      other_time_base(0),
+      default_tolerances(nullptr),
+      other_time_base(nullptr),
       allow_partial_joints_goal(false),
-      error_string(0)
+      error_string(nullptr)
   {}
 
   Trajectory*                current_trajectory;
@@ -524,5 +524,3 @@ Trajectory initJointTrajectory(const trajectory_msgs::JointTrajectory&       msg
 }
 
 } // namespace
-
-#endif // header guard

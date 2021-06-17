@@ -76,7 +76,7 @@ namespace effort_controllers
 
     // Get URDF
     urdf::Model urdf;
-    if (!urdf.initParam("robot_description"))
+    if (!urdf.initParamWithNodeHandle("robot_description", n))
     {
       ROS_ERROR("Failed to parse urdf file");
       return false;
@@ -120,6 +120,18 @@ namespace effort_controllers
     return true;
   }
 
+  void JointGroupPositionController::starting(const ros::Time& time)
+  {
+    std::vector<double> current_positions(n_joints_, 0.0);
+    for (std::size_t i = 0; i < n_joints_; ++i)
+    {
+      current_positions[i] = joints_[i].getPosition();
+      enforceJointLimits(current_positions[i], i);
+      pid_controllers_[i].reset();
+    }
+    commands_buffer_.initRT(current_positions);
+  }
+
   void JointGroupPositionController::update(const ros::Time& time, const ros::Duration& period)
   {
     std::vector<double> & commands = *commands_buffer_.readFromRT();
@@ -127,7 +139,7 @@ namespace effort_controllers
     {
         double command_position = commands[i];
 
-        double error; //, vel_error;
+        double error;
         double commanded_effort;
 
         double current_position = joints_[i].getPosition();
@@ -138,7 +150,7 @@ namespace effort_controllers
         // Compute position error
         if (joint_urdfs_[i]->type == urdf::Joint::REVOLUTE)
         {
-         angles::shortest_angular_distance_with_limits(
+          angles::shortest_angular_distance_with_large_limits(
             current_position,
             command_position,
             joint_urdfs_[i]->limits->lower,
@@ -165,9 +177,9 @@ namespace effort_controllers
   void JointGroupPositionController::commandCB(const std_msgs::Float64MultiArrayConstPtr& msg)
   {
     if(msg->data.size()!=n_joints_)
-    { 
+    {
       ROS_ERROR_STREAM("Dimension of command (" << msg->data.size() << ") does not match number of joints (" << n_joints_ << ")! Not executing!");
-      return; 
+      return;
     }
     commands_buffer_.writeFromNonRT(msg->data);
   }

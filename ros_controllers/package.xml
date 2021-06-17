@@ -1,6 +1,10 @@
-<package format="2">
+<?xml version="1.0"?>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>ros_controllers</name>
-  <version>0.15.0</version>
+  <version>0.19.0</version>
   <description>Library of ros controllers</description>
 
   <maintainer email="bence.magyar.robotics@gmail.com">Bence Magyar</maintainer>
@@ -27,7 +31,6 @@
   <exec_depend>joint_state_controller</exec_depend>
   <exec_depend>joint_trajectory_controller</exec_depend>
   <exec_depend>position_controllers</exec_depend>
-  <exec_depend>rqt_joint_trajectory_controller</exec_depend>
   <exec_depend>velocity_controllers</exec_depend>
 
   <export>

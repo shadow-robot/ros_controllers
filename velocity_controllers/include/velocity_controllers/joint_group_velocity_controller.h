@@ -35,10 +35,11 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-#ifndef VELOCITY_CONTROLLERS_JOINT_GROUP_VELOCITY_CONTROLLER_H
-#define VELOCITY_CONTROLLERS_JOINT_GROUP_VELOCITY_CONTROLLER_H
+#pragma once
+
 
 #include <forward_command_controller/forward_joint_group_command_controller.h>
+#include <hardware_interface/joint_command_interface.h>
 
 namespace velocity_controllers
 {
@@ -60,5 +61,3 @@ typedef forward_command_controller::ForwardJointGroupCommandController<hardware_
         JointGroupVelocityController;
 
 }
-
-#endif

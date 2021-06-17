@@ -29,13 +29,12 @@
  * Author: Wim Meeussen
  */
 
-#ifndef JOINT_STATE_CONTROLLER_JOINT_STATE_CONTROLLER_H
-#define JOINT_STATE_CONTROLLER_JOINT_STATE_CONTROLLER_H
+#pragma once
+
 
 #include <controller_interface/controller.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <memory>
-#include <pluginlib/class_list_macros.hpp>
 #include <realtime_tools/realtime_publisher.h>
 #include <sensor_msgs/JointState.h>
 
@@ -99,5 +98,3 @@ private:
 };
 
 }
-
-#endif
